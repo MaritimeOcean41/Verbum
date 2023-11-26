@@ -10,17 +10,17 @@ var realAnswer;
 
 window.onload = function() {
     // Carregar as listas de palavras
-    fetch('/data/assets/answer-list.txt') // Carregar a lista de respostas
+    fetch('./data/assets/answer-list.txt') // Carregar a lista de respostas
         .then((response) => response.text())
         .then((text) => {
-            var answerList = text.split('\r\n'); // Transformar em um array
+            var answerList = text.split('\n'); // Transformar em um array
             realAnswer = answerList[Math.floor(Math.random()*answerList.length)]; // Escolher a palavra
         });
 
-    fetch('/data/assets/valid-words.txt') // Carregar a lista de palavras válidas
+    fetch('./data/assets/valid-words.txt') // Carregar a lista de palavras válidas
         .then((response) => response.text())
         .then((text) => {
-            validWords = text.split('\r\n'); // Transformar em um array
+            validWords = text.split('\n'); // Transformar em um array
         });
 
     // Criar as células dinamicamente
