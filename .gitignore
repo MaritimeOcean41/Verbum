@@ -1,0 +1,7 @@
+random
+app.js
+node_modules/
+package-lock.json
+package.json
+words.txt
+new-word.txt
