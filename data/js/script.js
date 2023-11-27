@@ -149,19 +149,17 @@ document.addEventListener('click', function(e) {
         case 'key': // Escrever utilizando ao 'tecladinho'
             var arrPos = targetId.split('k'); // Conseguir a posição da letra
             var letter = KEYBOARD[arrPos[0]][arrPos[1]];
-            if($(`#${targetId}`).attr('prior') !== '0') { // Quando prior = 0, a tecla fica desativada, pois não temos a letra em questão na resposta
-                if(Array.isArray(letter)) { // Se for um array só poderá ser a tecla ENTER ou BACKSPACE
-                    switch(letter[0]) {
-                        case 'ENTER':
-                            check(13);
-                            break;
-                        case '⌫': // Backspace
-                            check(8);
-                            break;
+            if(Array.isArray(letter)) { // Se for um array só poderá ser a tecla ENTER ou BACKSPACE
+                switch(letter[0]) {
+                    case 'ENTER':
+                        check(13);
+                        break;
+                    case '⌫': // Backspace
+                        check(8);
+                        break;
                     }
-                } else { // Se não for um array, ou seja, apenas se for uma letra
-                    check(letter.charCodeAt(0), letter); // .charCodeAt(0) define o unicode relativo ao caractere
-                }
+            } else { // Se não for um array, ou seja, apenas se for uma letra
+                check(letter.charCodeAt(0), letter); // .charCodeAt(0) define o unicode relativo ao caractere
             }
             break;
     }

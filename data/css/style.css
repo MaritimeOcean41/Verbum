@@ -116,7 +116,7 @@ section .keyboard .kr {
 }
 section .keyboard .kr .key {
   display: inline-block;
-  width: 5.5vw;
+  width: 50px;
   height: 35px;
   text-align: center;
   line-height: 35px;

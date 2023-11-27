@@ -1,13 +1,14 @@
 /* Quando for um dispositivo com width < 968px */
 header {
   width: 100vw;
-  height: 25vh;
+  height: 20vh;
   border-right-style: none;
 }
 header .title {
   width: 100%;
-  height: 15vh;
-  line-height: 15vh;
+  height: 10vh;
+  font-size: 2.25em;
+  line-height: 10vh;
 }
 header .info {
   display: inline-flex;
@@ -24,7 +25,7 @@ header .info span {
 }
 
 section {
-  top: 25vh;
+  top: 20vh;
   left: 0;
   width: 100vw;
   height: 75vh;
@@ -36,5 +37,6 @@ section .keyboard {
   top: 5%;
 }
 section .keyboard .kr .key {
+  width: 7vw;
   font-size: 1em;
 }/*# sourceMappingURL=lowSize.css.map */
