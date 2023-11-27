@@ -1,3 +1,4 @@
+/* Normal/Geral; Quando o dispositivo tiver o width > 968px */
 @import url("https://maritimeocean41.github.io/fonts/main.css");
 * {
   font-family: "Poppins", sans-serif;
@@ -57,6 +58,11 @@ header .info {
   font-size: 1.6rem;
   text-align: center;
 }
+header .info span {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+}
 
 section {
   position: fixed;
@@ -110,7 +116,7 @@ section .keyboard .kr {
 }
 section .keyboard .kr .key {
   display: inline-block;
-  width: 50px;
+  width: 5.5vw;
   height: 35px;
   text-align: center;
   line-height: 35px;

@@ -36,7 +36,7 @@ window.onload = function() {
     for(i in KEYBOARD) {
         $('.keyboard').append(`<div id="kr${i}" class="kr"></div>`);
         for(j in KEYBOARD[i]) {
-            $(`#kr${i}`).append(`<span id="${i}k${j}" class="key" style="width: ${50*KEYBOARD[i][j][1]}px;" prior="-1">${KEYBOARD[i][j][0]}</span>`); // prior -1 = Undefined
+            $(`#kr${i}`).append(`<span id="${i}k${j}" class="key" style="width: ${5.5*KEYBOARD[i][j][1]}vw;" prior="-1">${KEYBOARD[i][j][0]}</span>`); // prior -1 = Undefined
         }
     }
 };
@@ -149,17 +149,19 @@ document.addEventListener('click', function(e) {
         case 'key': // Escrever utilizando ao 'tecladinho'
             var arrPos = targetId.split('k'); // Conseguir a posição da letra
             var letter = KEYBOARD[arrPos[0]][arrPos[1]];
-            if(Array.isArray(letter)) { // Se for um array só poderá ser a tecla ENTER ou BACKSPACE
-                switch(letter[0]) {
-                    case 'ENTER':
-                        check(13);
-                        break;
-                    case '⌫': // Backspace
-                        check(8);
-                        break;
+            if($(`#${targetId}`).attr('prior') !== '0') { // Quando prior = 0, a tecla fica desativada, pois não temos a letra em questão na resposta
+                if(Array.isArray(letter)) { // Se for um array só poderá ser a tecla ENTER ou BACKSPACE
+                    switch(letter[0]) {
+                        case 'ENTER':
+                            check(13);
+                            break;
+                        case '⌫': // Backspace
+                            check(8);
+                            break;
+                    }
+                } else { // Se não for um array, ou seja, apenas se for uma letra
+                    check(letter.charCodeAt(0), letter); // .charCodeAt(0) define o unicode relativo ao caractere
                 }
-            } else { // Se não for um array, ou seja, apenas se for uma letra
-                check(letter.charCodeAt(0), letter); // .charCodeAt(0) define o unicode relativo ao caractere
             }
             break;
     }
@@ -174,7 +176,7 @@ function loop() {
 
     // Mudar a cor de aocrdo com o atributo 'prior'
     $('[prior="-1"]').css('background-color', '#eee');
-    $('.key[prior="0"]').css('background-color', '#ccc'); // Somene as teclas irão ficar nessa cor
+    $('.key[prior="0"]').css({'background-color': '#ccc', 'opacity': '0.75'}); // Somene as teclas irão ficar nessa cor
     $('[prior="1"]').css({'background-color': 'yellow', 'border-color': 'yellow'});
     $('[prior="2"]').css({'background-color': 'green', 'border-color': 'green'});
 

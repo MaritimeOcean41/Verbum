@@ -1,0 +1,50 @@
+/* Quando for um dispositivo com width < 968px */
+header
+{
+    width: 100vw;
+    height: 25vh;
+    border-right-style: none;
+    .title
+    {
+        width: 100%;
+        height: 15vh;
+        line-height: 15vh;
+    }
+    .info
+    {
+        display: inline-flex;
+        width: 100vw;
+        height: 10vh;
+        margin-top: 0;
+        justify-content: center;
+        span
+        {
+            display: inline-block;
+            width: 23%;
+            height: 10vh;
+            font-size: 2vw;
+        }
+    }
+}
+section
+{
+    top: 25vh;
+    left: 0;
+    width: 100vw;
+    height: 75vh;
+    .game
+    {
+        top: 0;
+    }
+    .keyboard
+    {
+        top: 5%;
+        .kr
+        {
+            .key
+            {
+                font-size: 1em;
+            }
+        }
+    }
+}
