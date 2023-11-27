@@ -138,3 +138,44 @@ section
         }
     }
 }
+
+/* Popup de ganhar ou perder */
+.pop
+{
+    background-color: #000;
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 50%;
+    width: 20vw;
+    height: 19vh;
+    opacity: 0.8;
+    cursor: pointer;
+    line-height: 6vh;
+    padding: .5vh 0 0 0;
+    border-radius: 20px;
+    transform: translate(-50%,-50%);
+    /*animation: popup_show 1.5s;*/
+    .msg
+    {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        text-align: center;
+        span
+        {
+            color: #fff;
+            b
+            {
+                color: #fff;
+                text-decoration: dashed;
+            }
+        }
+    }
+}
+@keyframes popup_show {
+    0% {display: block; opacity: 0; top: 55%;}
+    100% {opacity: 0.8; top: 50%;}
+}

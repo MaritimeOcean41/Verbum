@@ -39,4 +39,9 @@ section .keyboard {
 section .keyboard .kr .key {
   width: 7vw;
   font-size: 1em;
+}
+
+/* Popup de ganhar ou perder */
+.pop {
+  width: 52vw;
 }/*# sourceMappingURL=lowSize.css.map */

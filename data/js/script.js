@@ -132,10 +132,25 @@ function submit() {
                 };
             }
         }
+
+        if(strAnswer == realAnswer) { // Se a resposta for a certa
+            console.log('a');
+            finish(1); // 1 - Ganhou
+        } else if(selectedCell[0] == 5) { // Se a resposta não for a certa, porém não temos mais linhas disponíveis
+            finish(0); // 0 - Perdeu
+        }
+
         // Ir para a próxima linha
         selectedCell[0] += 1;
         selectedCell[1] = 0;
     }
+}
+
+// Encerrar a rodada
+function finish(modifier) {
+    var msg = [`A palavra era: <b>${realAnswer}</b>`, 'Parabéns. Você ganhou!!']; // Mensagens que aparecem ao perder ou ganhar
+    $('#mod').html(msg[modifier]);
+    $('.pop').css({'animation': 'popup_show 1.5s', 'display': 'block'}); // Ativar a animação para aparecer o popup com a mensagem
 }
 
 // Identifica se algo foi clicado (Ex. células ou teclas)
