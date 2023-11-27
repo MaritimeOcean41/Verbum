@@ -1,7 +1,7 @@
 const KEYBOARD = [
     ['Q','W','E','R','T','Y','U','I','O','P'],
-    ['A','S','D','F','G','H','J','K','L'],
-    ['Z','X','C','V','B','N','M']
+    ['A','S','D','F','G','H','J','K','L',['⌫', 2]],
+    ['Z','X','C','V','B','N','M',['ENTER', 3]]
 ];
 var validWords = [];
 var selectedCell = [0,0];
@@ -36,12 +36,44 @@ window.onload = function() {
     for(i in KEYBOARD) {
         $('.keyboard').append(`<div id="kr${i}" class="kr"></div>`);
         for(j in KEYBOARD[i]) {
-            $(`#kr${i}`).append(`<span id="k${i}k${j}" class="key" prior="-1">${KEYBOARD[i][j]}</span>`); // prior -1 = Undefined
+            $(`#kr${i}`).append(`<span id="${i}k${j}" class="key" style="width: ${50*KEYBOARD[i][j][1]}px;" prior="-1">${KEYBOARD[i][j][0]}</span>`); // prior -1 = Undefined
         }
     }
 };
 
-// Escrever
+// Checar qual a tecla apertada e determinar funções a partir disso
+function check(keyCode, key) {
+    if(keyCode <= 90 && keyCode >= 65) { // Se for uma letra [de A à Z]
+        write(`${selectedCell[0]}_${selectedCell[1]}`, key, false);
+    }
+    switch(keyCode) {
+        case 8: // 'Backspace'
+            if($(`#${selectedCell[0]}_${selectedCell[1]}`).text() !== '') {
+                write(`${selectedCell[0]}_${selectedCell[1]}`, '', true); // Remover a letra da célula selecionada sem selecionar a anterior
+            } else if(selectedCell[1] > 0 && selectedCell[1] <= 4) {
+                selectedCell[1] -= 1; write(`${selectedCell[0]}_${selectedCell[1]}`, '', true); // Remover a letra da célula anterior (quando não tiver letra na célula atual)
+            } else if(selectedCell[1] == 0) {
+                selectedCell[1] = 0; // Impedir que saia da célula 0 e pule para a célula 4
+            } else {
+                selectedCell[1] = 4; write(`${selectedCell[0]}_${selectedCell[1]}`, '', true); // Remover e selecionar a última célula (se nenhuma célula estiver selecionada)
+            }
+            break;
+        case 13: // 'Enter'
+            submit();
+            break;
+        case 37: // 'Left Arrow'
+            if(selectedCell[1] > 0 && selectedCell[1] <= 4) { selectedCell[1] -= 1; } else { selectedCell[1] = 0 }
+            break;
+        case 39: // 'Right Arrow'
+            if(selectedCell[1] < 4 && selectedCell[1] >= 0) { selectedCell[1] += 1; } else { selectedCell[1] = 4 }
+            break;
+        case 186: // 'Cedilha'
+            write(`${selectedCell[0]}_${selectedCell[1]}`, 'c', false);
+            break;
+    }
+}
+
+// Escrever ou remover letras pressionadas nas células
 function write(cell, letter, isRemov) {
     $(`#${cell}`).html(letter); // Escreve a letra na célula
     if(!isRemov) { selectedCell[1] += 1; } // Se for remover uma letra não avançar a célula
@@ -95,8 +127,8 @@ function submit() {
             // Muda a cor da tecla dos teclados para ficar igual as letras (Se o prior da tecla for menor do que o da célula)
             for(r in KEYBOARD) {
                 var keyNum = KEYBOARD[r].indexOf(($(`#${selectedCell[0]}_${i}`).text()).toUpperCase());
-                if($(`#k${r}k${keyNum}`).attr('prior') < $(`#${selectedCell[0]}_${i}`).attr('prior')) {
-                    $(`#k${r}k${keyNum}`).attr('prior', $(`#${selectedCell[0]}_${i}`).attr('prior'));
+                if($(`#${r}k${keyNum}`).attr('prior') < $(`#${selectedCell[0]}_${i}`).attr('prior')) {
+                    $(`#${r}k${keyNum}`).attr('prior', $(`#${selectedCell[0]}_${i}`).attr('prior'));
                 };
             }
         }
@@ -106,45 +138,34 @@ function submit() {
     }
 }
 
+// Identifica se algo foi clicado (Ex. células ou teclas)
 document.addEventListener('click', function(e) {
     var targetId = e.target.id;
-
     switch(e.target.className) {
         case 'cell': // Selecionar célula ao clicá-la
-            var newSelectedCell = targetId.split('_');
+            var newSelectedCell = targetId.split('_'); // Conseguir o número dessa nova célula selecionada
             selectedCell[1] = Number(newSelectedCell[1]);
+            break;
+        case 'key': // Escrever utilizando ao 'tecladinho'
+            var arrPos = targetId.split('k'); // Conseguir a posição da letra
+            var letter = KEYBOARD[arrPos[0]][arrPos[1]];
+            if(Array.isArray(letter)) { // Se for um array só poderá ser a tecla ENTER ou BACKSPACE
+                switch(letter[0]) {
+                    case 'ENTER':
+                        check(13);
+                        break;
+                    case '⌫': // Backspace
+                        check(8);
+                        break;
+                }
+            } else { // Se não for um array, ou seja, apenas se for uma letra
+                check(letter.charCodeAt(0), letter); // .charCodeAt(0) define o unicode relativo ao caractere
+            }
             break;
     }
 });
 document.addEventListener('keyup', function(e) {
-    if(e.keyCode <= 90 && e.keyCode >= 65) { // Se for uma letra [de A à Z]
-        write(`${selectedCell[0]}_${selectedCell[1]}`, e.key, false);
-    }
-    switch(e.keyCode) {
-        case 8: // 'Backspace'
-            if($(`#${selectedCell[0]}_${selectedCell[1]}`).text() !== '') {
-                write(`${selectedCell[0]}_${selectedCell[1]}`, '', true); // Remover a letra da célula selecionada sem selecionar a anterior
-            } else if(selectedCell[1] > 0 && selectedCell[1] <= 4) {
-                selectedCell[1] -= 1; write(`${selectedCell[0]}_${selectedCell[1]}`, '', true); // Remover a letra da célula anterior (quando não tiver letra na célula atual)
-            } else if(selectedCell[1] == 0) {
-                selectedCell[1] = 0; // Impedir que saia da célula 0 e pule para a célula 4
-            } else {
-                selectedCell[1] = 4; write(`${selectedCell[0]}_${selectedCell[1]}`, '', true); // Remover e selecionar a última célula (se nenhuma célula estiver selecionada)
-            }
-            break;
-        case 13: // 'Enter'
-            submit();
-            break;
-        case 37: // 'Left Arrow'
-            if(selectedCell[1] > 0 && selectedCell[1] <= 4) { selectedCell[1] -= 1; } else { selectedCell[1] = 0 }
-            break;
-        case 39: // 'Right Arrow'
-            if(selectedCell[1] < 4 && selectedCell[1] >= 0) { selectedCell[1] += 1; } else { selectedCell[1] = 4 }
-            break;
-        case 186: // 'Cedilha'
-            write(`${selectedCell[0]}_${selectedCell[1]}`, 'c', false);
-            break;
-    }
+    check(e.keyCode, e.key);
 });
 function loop() {
     // Sinalizar a célula selecionada
